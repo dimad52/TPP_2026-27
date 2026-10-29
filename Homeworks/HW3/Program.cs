@@ -1,21 +1,13 @@
-﻿class Character
+﻿abstract class Character
 {
     static int count;
     string name;
     int hp;
     int power;
     public Character(string name, int hp, int power) {this.name = name; this.hp = hp; this.power = power; count++;}
-    virtual public void Attack(Character target){
-        target.TakeDamage(this.Power);
-        Console.WriteLine($"Был нанесен удар: {power}");
-        target.GetStatus();
-    }
+    abstract public void Attack(Character target);
     public void TakeDamage(int damage){
         this.hp -= damage;
-    }
-    public void GetStatus(){
-        Console.WriteLine($"Имя персонажа: {Name}");
-        Console.WriteLine($"Хп персонажа: {Hp}");
     }
     public bool IsAlive() {
         if (Hp > 0) return true;
@@ -37,6 +29,10 @@
     public int Power {
         get {return power;}
         set {if (value > 0) {power = value;}}
+    }
+    public override string ToString() {return $"{Name} (HP: {Hp})";}
+    public override bool Equals(Character obj) {
+        return this.Name == obj.Name;
     }
 
 }
@@ -60,6 +56,10 @@ class Program
 {
     private static void Main()
     {
-        Console.WriteLine("Hello, World!");
+        Character me = new Player("Dima", 100, 5);
+        Character enemy = new Enemy("Vrag", 100, 5);
+        Console.WriteLine(me.ToString());
+        Character[] charac = {me, enemy};
+        for (int i = 0; i < 2; i++) {charac[i].TakeDamage(10);}
     }
 }
